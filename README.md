@@ -80,6 +80,7 @@ graph LR
 ### 🔗 Activity 2.2.3: Interpreting Correlation
 
 <img width="3998" height="2011" alt="image" src="https://github.com/user-attachments/assets/3482bbcc-fe5a-4fe6-abeb-37a3fc208faa" />
+
 ```mermaid
 graph TD
     Data[BMI, Children, Costs] --> Plot[Scatter Plot Visualization]
