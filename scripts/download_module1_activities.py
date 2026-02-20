@@ -83,7 +83,13 @@ def _download_google_drive_file(file_id: str, out_path: Path) -> None:
             data = fetch(url2)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_bytes(data)
+    # Drive often serves notebooks as minified one-line JSON.
+    # Normalize to pretty-printed JSON for better tooling/editor support.
+    try:
+        nb = json.loads(data)
+        out_path.write_text(json.dumps(nb, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except Exception:
+        out_path.write_bytes(data)
 
 
 def main():
