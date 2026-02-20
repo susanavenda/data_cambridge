@@ -5,7 +5,11 @@ Uses Colab notebook titles (first # heading) as filenames."""
 import json
 import re
 import sys
+import time
 from pathlib import Path
+from urllib.parse import urlencode
+from urllib.request import Request, build_opener
+from http.cookiejar import CookieJar
 
 
 def _get_notebook_title(path: Path) -> str | None:
@@ -23,7 +27,7 @@ def _get_notebook_title(path: Path) -> str | None:
     return None
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = REPO_ROOT / "activities-module-1"
+OUTPUT_DIR = REPO_ROOT / "notebooks" / "activities-module-1" / "from-colab"
 
 # Colab notebook IDs (from sharing URLs)
 NOTEBOOK_IDS = [
@@ -43,23 +47,53 @@ NOTEBOOK_IDS = [
     "1ycWjElyZNje23jB86L3Kf6MKVsI8I2qq",
 ]
 
+def _download_google_drive_file(file_id: str, out_path: Path) -> None:
+    """
+    Download a publicly accessible Google Drive file to out_path.
+
+    Avoids third-party deps (gdown/requests). Handles the common "confirm download"
+    interstitial for Drive virus-scan warnings.
+    """
+    base_url = "https://drive.google.com/uc"
+    jar = CookieJar()
+    opener = build_opener(
+        # cookies are used for the "download_warning" confirm flows
+        __import__("urllib.request").request.HTTPCookieProcessor(jar)
+    )
+
+    def fetch(url: str) -> bytes:
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with opener.open(req, timeout=60) as resp:
+            return resp.read()
+
+    # 1) Initial request
+    params = {"export": "download", "id": file_id}
+    url = f"{base_url}?{urlencode(params)}"
+    data = fetch(url)
+
+    # 2) If we got HTML, it may be the confirm page.
+    #    Look for a confirm token in the returned HTML.
+    #    Example patterns include:
+    #      confirm=t&... or confirm=ABCD1234&...
+    if data.lstrip().startswith(b"<!") or b"<html" in data[:200].lower():
+        m = re.search(rb"confirm=([0-9A-Za-z_\\-]+)", data)
+        if m:
+            confirm = m.group(1).decode("utf-8")
+            url2 = f"{base_url}?{urlencode({'export':'download','confirm':confirm,'id':file_id})}"
+            data = fetch(url2)
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_bytes(data)
+
 
 def main():
-    try:
-        import gdown
-    except ImportError:
-        import subprocess
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "gdown", "-q"])
-        import gdown
-
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     for i, fid in enumerate(NOTEBOOK_IDS, start=1):
         out = OUTPUT_DIR / f"activity-{i:02d}.ipynb"
-        url = f"https://drive.google.com/uc?id={fid}"
         print(f"[{i:2d}/14] Downloading {fid} -> {out.name}...", end=" ", flush=True)
         try:
-            gdown.download(url, str(out), quiet=True, fuzzy=False)
+            _download_google_drive_file(fid, out)
             if out.exists() and out.stat().st_size > 100:
                 # Rename to Colab title (first # heading)
                 name = _get_notebook_title(out)
@@ -75,6 +109,7 @@ def main():
                 print("FAIL (empty or missing)")
         except Exception as e:
             print(f"FAIL: {e}")
+        time.sleep(0.2)
 
     print("\nDone.")
     print(f"Output: {OUTPUT_DIR}")
