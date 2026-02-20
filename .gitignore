@@ -1,0 +1,15 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local environment/config (do not commit secrets)
+.env
+.env.*
+
+# Python packaging/build artifacts
+*.egg-info/
+dist/
+build/
+
+# Local virtualenvs (some repos use .venv/)
+.venv/
