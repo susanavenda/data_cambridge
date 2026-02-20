@@ -2,29 +2,22 @@
 
 Colab notebooks from the Cambridge Data Science course.
 
+## Where they live in this repo
+
+These notebooks are stored under `notebooks/activities-module-1/` and organized into:
+
+- `demos/`
+- `my-activities/`
+- `solutions/`
+
+Each notebook includes an **Open in Colab** badge at the top that links to the correct file in GitHub.
+
 ## Download from Google Drive
 
-**Source:** [Google Drive folder](https://drive.google.com/drive/folders/17mX5ZDCexHhOiPTchzFdAYwKFdG93C1l?usp=drive_link)
+**Folder (your Drive copy):** [Google Drive folder](https://drive.google.com/drive/folders/1yhgUd6SNb_UtN82kGebq8yisW9MgrGMD?usp=drive_link)
 
-### Option 1: Automated (requires public sharing)
+### Manual download
 
-1. In Google Drive, right-click the folder → **Share** → set to **"Anyone with the link"** (Viewer).
-2. From the project root, run:
-   ```bash
-   python scripts/download_module1_activities.py
-   ```
-
-### Option 2: Manual download
-
-1. Open the [Drive folder](https://drive.google.com/drive/folders/17mX5ZDCexHhOiPTchzFdAYwKFdG93C1l?usp=drive_link).
+1. Open the [Drive folder](https://drive.google.com/drive/folders/1yhgUd6SNb_UtN82kGebq8yisW9MgrGMD?usp=drive_link).
 2. Select all notebooks → **Download** (or download individually).
-3. Move the `.ipynb` files into this folder: `activities-module-1/`.
-
-### Option 3: Using cookies (if Option 1 fails)
-
-If the folder is shared but gdown still fails (e.g. due to access limits):
-
-1. Install a browser extension like [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc).
-2. Sign in to Google Drive in your browser, open the folder, export cookies as `cookies.txt`.
-3. Run: `mkdir -p ~/.cache/gdown && mv cookies.txt ~/.cache/gdown/cookies.txt`
-4. Run the download script again.
+3. Move the `.ipynb` files into: `notebooks/activities-module-1/` (or the appropriate subfolder).
