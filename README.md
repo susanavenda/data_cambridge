@@ -19,13 +19,68 @@ This repository documents a complete data science workflow. It transitions from 
 Week 1: Strategic Foundations
 1. The CRISP-DM Framework
 Before touching code, I utilize the CRISP-DM lifecycle to ensure technical work solves a real business problem.
+```mermaid
+graph LR
+    subgraph Iterative Cycle
+    BU[Business Understanding] <--> DU[Data Understanding]
+    DU <--> DP[Data Preparation]
+    DP <--> M[Modeling]
+    M <--> E[Evaluation]
+    E --> BU
+    end
+    E --> D[Deployment]
+    style BU fill:#f9f,stroke:#333,stroke-width:2px
+    style D fill:#6f6,stroke:#333,stroke-width:2px
+```
 
 Business Understanding: Defining the "Wisdom" required for action.
-
+```mermaid
+graph TD
+    W[Wisdom: Strategic Action] --- K[Knowledge: Why it happened]
+    K --- I[Information: Context/Trends]
+    I --- D[Data: Raw Numbers]
+    
+    style W fill:#ffd700,stroke:#333,stroke-width:4px
+```
 Data Understanding: Assessing the 5 Vs of Big Data (Volume, Velocity, Variety, Veracity, and Value).
+```mermaid
+mindmap
+  root((5 Vs of Big Data))
+    Volume
+      Massive Scale
+      Storage Needs
+    Velocity
+      Streaming Data
+      Real-time Processing
+    Variety
+      Unstructured
+      Semi-structured
+      Structured
+    Veracity
+      Data Quality
+      Trustworthiness
+      Cleanliness
+    Value
+      ROI
+      Business Insights
+      Actionability
 
+```
 Feature Engineering: Applying human ingenuity to create new variables (e.g., "Debt-to-Income ratio") that help models see patterns they would otherwise miss.
 
+```mermaid
+graph TD
+    Raw[Raw Data Sources] --> Domain[Domain Knowledge Application]
+    Domain --> Creation{New Feature Creation}
+    Creation -- Example --> DTI[Debt-to-Income Ratio]
+    Creation -- Example --> PPSF[Price Per Sq Ft]
+    DTI --> Selection[Feature Selection]
+    PPSF --> Selection
+    Selection --> Model[Machine Learning Model]
+    
+    linkStyle default stroke:#2ecc71,stroke-width:2px;
+```
+    
 2. Data Classification
 Understanding data types is the first step in selecting the correct statistical tool:
 
@@ -33,6 +88,26 @@ Categorical (Nominal/Ordinal): Used for identification and ranking.
 
 Numerical (Discrete/Continuous): Used for counting and precise measuring.
 
+```mermaid
+graph TD
+    Data[Data Types] --> Cat[Categorical / Qualitative]
+    Data --> Num[Numerical / Quantitative]
+    
+    Cat --> Nom[Nominal]
+    Nom -- Example --> Eye[Eye Color, Gender]
+    
+    Cat --> Ord[Ordinal]
+    Ord -- Example --> Rank[Survey Ratings, Seniority]
+    
+    Num --> Disc[Discrete]
+    Disc -- Example --> Count[Number of Employees]
+    
+    Num --> Cont[Continuous]
+    Cont -- Example --> Meas[Revenue, Weight, Time]
+
+    style Cat fill:#e1f5fe,stroke:#01579b
+    style Num fill:#fff3e0,stroke:#e65100
+```
 
 Master Decision Logic Flow
 This diagram illustrates the end-to-end framework used to select the appropriate statistical test based on data types and business goals.
