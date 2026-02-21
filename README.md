@@ -1,7 +1,5 @@
 # Data Science Portfolio: Statistical Methods & Predictive Modeling
 
-> **Week 2: From Intuition to Evidence-Based Decision Making**
-
 ## Project Overview
 
 This repository documents a complete data science workflow. It transitions from the strategic planning of Week 1 (CRISP-DM, Data Maturity, and Feature Engineering) to the mathematical execution of Week 2 (Hypothesis Testing, Correlation, and Regression). The goal is to move beyond "gut feeling" and use mathematical rigor to validate assumptions and predict outcomes.
@@ -108,6 +106,40 @@ graph TD
     style Cat fill:#e1f5fe,stroke:#01579b
     style Num fill:#fff3e0,stroke:#e65100
 ```
+
+Master Decision Logic Flow
+This diagram illustrates the end-to-end framework used to select the appropriate statistical test based on data types and business goals.
+
+```mermaid
+graph TD
+    A[Start: Receive Dataset] --> B[CRISP-DM: Business Understanding]
+    B --> C{Data Type?}
+    
+    C -- Categorical --> D[Count frequencies / Proportions]
+    C -- Continuous --> E[Check Distribution: Histogram]
+    
+    E --> F{Is it Normal?}
+    F -- Yes: Parametric --> G[Mean, SD, Pearson r, t-test]
+    F -- No: Non-Parametric --> H[Median, IQR, Spearman rho]
+    
+    G --> I{Business Goal?}
+    H --> I
+    D --> I
+    
+    I -- "Compare Groups" --> J{How many groups?}
+    J -- 2 Groups --> K[t-test]
+    J -- 3+ Groups --> L[ANOVA]
+    J -- Cat vs Cat --> M[Chi-Square]
+    
+    I -- "Find Relationships" --> N[Correlation Analysis]
+    I -- "Predict Outcomes" --> O[Linear Regression]
+    
+    O --> P[Check Model Fit: R-Squared / RSS]
+    P --> Q[Check Assumptions: Residual Plots]
+```
+
+
+
 
 ---
 
@@ -235,15 +267,98 @@ graph TD
 
 ## Assumption & Diagnostic Checks
 
-To ensure model reliability, I performed the following diagnostic checks:
+To round out your GitHub portfolio, here are the diagrams for the **Assumption & Diagnostic Checks**. These are crucial because they demonstrate to recruiters that you don't just "run models," but you actively validate their integrity and reliability.
 
-Homoscedasticity: Verified constant variance in residuals to ensure consistent prediction accuracy.
-Central Limit Theorem: Leveraged the CLT to ensure that sample means follow a normal distribution, allowing for valid inference.
-Risk Assessment: Evaluated Sensitivity vs. Specificity trade-offs to balance between missing positives and raising false alarms.
+### 1. Model Diagnostic Flow
 
-* **Homoscedasticity:** Verified constant variance in residuals to ensure consistent prediction accuracy.
-* **Multicollinearity:** Screened independent variables to ensure they were not redundant.
-* **Prediction Intervals:** Provided a range for new observations to account for individual variability.
+This diagram shows the sequence of checks you perform once a model is built to ensure it is "trustworthy."
+
+```mermaid
+graph TD
+    Model[Trained Regression Model] --> Check1{Homoscedasticity}
+    Check1 -- "Residual Plot" --> Check2{Multicollinearity}
+    Check2 -- "VIF Analysis" --> Check3{Normality}
+    Check3 -- "Q-Q Plot / CLT" --> Check4{Risk Assessment}
+    
+    Check4 --> Sens[Sensitivity vs Specificity]
+    Check4 --> PI[Prediction Intervals]
+    
+    Sens --> Final[Reliable Business Insight]
+    PI --> Final
+
+```
+
+---
+
+### 2. Homoscedasticity (Error Variance)
+
+This is the most important visual check in regression. You want to see "the cloud," not "the fan."
+
+---
+
+### 3. Central Limit Theorem (CLT)
+
+The CLT is the "Safety Net" of statistics. It explains why we can use Normal Distribution math even if the raw data looks "messy."
+
+```mermaid
+graph LR
+    Pop[Messy/Non-Normal Population] --> Samples[Take 1000s of Samples]
+    Samples --> Means[Calculate Mean of each Sample]
+    Means --> Dist[Normal Distribution of Means]
+    
+    style Dist fill:#f9f,stroke:#333,stroke-width:2px
+
+```
+
+[Image illustrating the Central Limit Theorem showing how different population distributions result in normal sampling distributions]
+
+---
+
+### 4. Multicollinearity & Redundancy
+
+This explains why we screen independent variables. If  and  tell the same story, the model gets confused.
+
+```mermaid
+graph TD
+    X1[Feature A: Height in cm] --- Correlated((High Correlation))
+    X2[Feature B: Height in inches] --- Correlated
+    Correlated --> Issue[Unstable Coefficients]
+    Issue --> Fix[Drop one Feature]
+
+```
+
+---
+
+### 5. Risk Assessment: The Decision Trade-off
+
+When your model makes a prediction (e.g., "Will this customer be loyal?"), you have to balance two types of mistakes.
+
+```mermaid
+graph LR
+    subgraph "Sensitivity (Catching the Truth)"
+    TP[True Positives]
+    FN[False Negatives]
+    end
+    
+    subgraph "Specificity (Avoiding False Alarms)"
+    TN[True Negatives]
+    FP[False Positives]
+    end
+    
+    TP -.-> Tradeoff{The Balance}
+    FP -.-> Tradeoff
+
+```
+
+---
+
+### 6. Prediction Intervals vs. Confidence Intervals
+
+This explains the "Individual vs. Average" range you provided in your diagnostic checks.
+
+[Image comparing Confidence Intervals and Prediction Intervals on a regression plot, showing the PI as a wider band]
+
+**Would you like me to help you write a "Diagnostic Summary" paragraph for your README that explains how these checks specifically improved your retail loyalty model?**
 
 ---
 
