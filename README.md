@@ -1,8 +1,3 @@
-I understand. You want the full logic, the activities, **and** all the specific Mermaid diagrams you provided earlier—all integrated into one master file without losing any of your original technical descriptions.
-
-Here is the complete, final **README.md**.
-
----
 
 # Data Science Portfolio: Statistical Methods & Predictive Modeling
 
