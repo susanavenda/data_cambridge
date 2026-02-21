@@ -1,10 +1,19 @@
+I understand. You want the full logic, the activities, **and** all the specific Mermaid diagrams you provided earlier—all integrated into one master file without losing any of your original technical descriptions.
+
+Here is the complete, final **README.md**.
+
+---
+
 # Data Science Portfolio: Statistical Methods & Predictive Modeling
+
+> **Weeks 1 & 2: From Business Alignment to Evidence-Based Decision Making**
 
 ## Project Overview
 
-This repository documents a complete data science workflow. It transitions from the strategic planning of Week 1 (CRISP-DM, Data Maturity, and Feature Engineering) to the mathematical execution of Week 2 (Hypothesis Testing, Correlation, and Regression). The goal is to move beyond "gut feeling" and use mathematical rigor to validate assumptions and predict outcomes.
+This repository documents a complete data science workflow. It transitions from the strategic planning of **Week 1** (CRISP-DM, Data Maturity, and Feature Engineering) to the mathematical execution of **Week 2** (Hypothesis Testing, Correlation, and Regression). The goal is to move beyond "gut feeling" and use mathematical rigor to validate assumptions, identify patterns, and predict future outcomes.
 
 ## 🛠️ Skills Demonstrated
+
 * **Strategic Planning:** CRISP-DM lifecycle, 5 Whys Root Cause Analysis, and DIKW Pyramid.
 * **Hypothesis Testing:** -tests, ANOVA, and Chi-Square analysis.
 * **Correlation:** Pearson () and Spearman () coefficients for relationship mapping.
@@ -14,9 +23,12 @@ This repository documents a complete data science workflow. It transitions from 
 
 ---
 
-Week 1: Strategic Foundations
-1. The CRISP-DM Framework
-Before touching code, I utilize the CRISP-DM lifecycle to ensure technical work solves a real business problem.
+## Week 1: Strategic Foundations
+
+### 1. The CRISP-DM Framework
+
+Before touching code, I utilize the **CRISP-DM** lifecycle to ensure technical work solves a real business problem.
+
 ```mermaid
 graph LR
     subgraph Iterative Cycle
@@ -29,42 +41,41 @@ graph LR
     E --> D[Deployment]
     style BU fill:#f9f,stroke:#333,stroke-width:2px
     style D fill:#6f6,stroke:#333,stroke-width:2px
+
 ```
 
-Business Understanding: Defining the "Wisdom" required for action.
+### 2. Business Logic & Data Understanding
+
+* **DIKW Pyramid:** Defining the "Wisdom" required for action.
+
 ```mermaid
 graph TD
     W[Wisdom: Strategic Action] --- K[Knowledge: Why it happened]
     K --- I[Information: Context/Trends]
     I --- D[Data: Raw Numbers]
-    
     style W fill:#ffd700,stroke:#333,stroke-width:4px
+
 ```
-Data Understanding: Assessing the 5 Vs of Big Data (Volume, Velocity, Variety, Veracity, and Value).
+
+* **The 5 Vs:** Assessing Volume, Velocity, Variety, Veracity, and Value.
+
 ```mermaid
 mindmap
   root((5 Vs of Big Data))
     Volume
       Massive Scale
-      Storage Needs
     Velocity
-      Streaming Data
       Real-time Processing
     Variety
-      Unstructured
-      Semi-structured
-      Structured
+      Unstructured/Structured
     Veracity
       Data Quality
-      Trustworthiness
-      Cleanliness
     Value
-      ROI
-      Business Insights
-      Actionability
+      ROI/Insights
 
 ```
-Feature Engineering: Applying human ingenuity to create new variables (e.g., "Debt-to-Income ratio") that help models see patterns they would otherwise miss.
+
+* **Feature Engineering:** Applying human ingenuity to create variables that help models see hidden patterns.
 
 ```mermaid
 graph TD
@@ -75,108 +86,57 @@ graph TD
     DTI --> Selection[Feature Selection]
     PPSF --> Selection
     Selection --> Model[Machine Learning Model]
-    
     linkStyle default stroke:#2ecc71,stroke-width:2px;
+
 ```
-    
-2. Data Classification
-Understanding data types is the first step in selecting the correct statistical tool:
 
-Categorical (Nominal/Ordinal): Used for identification and ranking.
+### 3. Data Classification
 
-Numerical (Discrete/Continuous): Used for counting and precise measuring.
+Understanding data types is the first step in selecting the correct statistical tool.
 
 ```mermaid
 graph TD
     Data[Data Types] --> Cat[Categorical / Qualitative]
     Data --> Num[Numerical / Quantitative]
-    
     Cat --> Nom[Nominal]
     Nom -- Example --> Eye[Eye Color, Gender]
-    
     Cat --> Ord[Ordinal]
-    Ord -- Example --> Rank[Survey Ratings, Seniority]
-    
+    Ord -- Example --> Rank[Survey Ratings]
     Num --> Disc[Discrete]
-    Disc -- Example --> Count[Number of Employees]
-    
+    Disc -- Example --> Count[Employee Count]
     Num --> Cont[Continuous]
-    Cont -- Example --> Meas[Revenue, Weight, Time]
-
+    Cont -- Example --> Meas[Revenue, Time]
     style Cat fill:#e1f5fe,stroke:#01579b
     style Num fill:#fff3e0,stroke:#e65100
+
 ```
 
-Master Decision Logic Flow
-This diagram illustrates the end-to-end framework used to select the appropriate statistical test based on data types and business goals.
+---
+
+## Master Decision Logic Flow
+
+This framework is used throughout the activities to select the appropriate statistical test.
 
 ```mermaid
 graph TD
     A[Start: Receive Dataset] --> B[CRISP-DM: Business Understanding]
     B --> C{Data Type?}
-    
     C -- Categorical --> D[Count frequencies / Proportions]
     C -- Continuous --> E[Check Distribution: Histogram]
-    
     E --> F{Is it Normal?}
     F -- Yes: Parametric --> G[Mean, SD, Pearson r, t-test]
     F -- No: Non-Parametric --> H[Median, IQR, Spearman rho]
-    
     G --> I{Business Goal?}
     H --> I
     D --> I
-    
     I -- "Compare Groups" --> J{How many groups?}
     J -- 2 Groups --> K[t-test]
     J -- 3+ Groups --> L[ANOVA]
     J -- Cat vs Cat --> M[Chi-Square]
-    
     I -- "Find Relationships" --> N[Correlation Analysis]
     I -- "Predict Outcomes" --> O[Linear Regression]
-    
     O --> P[Check Model Fit: R-Squared / RSS]
     P --> Q[Check Assumptions: Residual Plots]
-```
-
-
-
-
----
-
-
-## Decision Logic Flow
-
-The following diagram illustrates the decision-making framework used throughout these activities to select the appropriate statistical test based on data types and business goals.
-
-```mermaid
-graph TD
-    A[Start: Receive Dataset] --> B{Data Type?}
-    
-    B -- Categorical --> C[Count frequencies / Proportions]
-    B -- Continuous --> D[Check Distribution: Histogram]
-    
-    D --> E{Is it Normal?}
-    E -- Yes: Parametric --> F[Mean, SD, Pearson r, t-test]
-    E -- No: Non-Parametric --> G[Median, IQR, Spearman rho]
-    
-    F --> H{Business Goal?}
-    G --> H
-    C --> H
-    
-    H -- "Compare Groups" --> I{How many groups?}
-    I -- 2 Groups --> J[t-test]
-    I -- 3+ Groups --> K[ANOVA]
-    I -- Cat vs Cat --> L[Chi-Square]
-    
-    H -- "Find Relationships" --> M[Correlation Analysis]
-    H -- "Predict Outcomes" --> O[Linear Regression]
-    
-    O --> P[Check Model Fit: R-Squared / RSS]
-    P --> Q[Check Assumptions: Residual Plots]
-    
-    R[p-value] --> U[Business Recommendation]
-    S[Strength/Direction] --> U
-    T[Coefficients] --> U
 
 ```
 
@@ -184,94 +144,68 @@ graph TD
 
 ## Portfolio Activities
 
-###  Activity 2.1.3: Hypothesis Testing
+### Activity 2.1.3: Hypothesis Testing
 
-Objective: Validate assumptions across five scenarios (Price, Productivity, Market Research, QC, and Product Lines).
-Implementation: Used scipy.stats to separate "signal" from "noise" by interpreting $p$-values against a significance level ($\alpha$) of 0.05.
+* **Objective:** Validate assumptions across scenarios (Price, Productivity, Market Research, QC, and Product Lines).
+* **Technical Implementation:** Utilized `scipy.stats` to perform t-tests and ANOVA.
+* **Key Insight:** Separated "signal" from "noise" by interpreting -values against .
 
 ```mermaid
 graph LR
     Start[Business Scenario] --> Q1{What are we comparing?}
     Q1 -- "Means (Averages)" --> Q2{How many groups?}
     Q1 -- "Category Counts" --> Chi[Chi-Square Test]
-    
     Q2 -- "2 Groups" --> T[t-test]
     Q2 -- "3+ Groups" --> ANOVA[One-way ANOVA]
-    
     T --> P{p < 0.05?}
     ANOVA --> P
     Chi --> P
-    
     P -- Yes --> Res1[Significant: Reject Null]
     P -- No --> Res2[Not Significant: Keep Status Quo]
+
 ```
-* **Objective:** Validate business assumptions across five scenarios (Price, Productivity, Market Research, QC, and Product Lines).
-* **Technical Implementation:** Utilized `scipy.stats` to perform t-tests and ANOVA.
-* **Key Insight:** Separated "signal" from "noise" by interpreting -values against a significance level () of **0.05**.
----
+
 ### Activity 2.2.3: Interpreting Correlation
 
-Objective: Analyze lifestyle impacts (BMI, children) on medical insurance costs.
-
-Implementation: Evaluated Pearson vs. Spearman to account for outliers and non-linear trends.
-
-Insight: Identified confounding variables (like Age) to avoid the "Correlation implies Causation" fallacy.
-
-
-<img width="3998" height="2011" alt="image" src="https://github.com/user-attachments/assets/3482bbcc-fe5a-4fe6-abeb-37a3fc208faa" />
+* **Objective:** Analyze lifestyle impacts (BMI, children) on medical insurance costs.
+* **Technical Implementation:** Computed Pearson and Spearman coefficients; visualized relationships via Seaborn.
 
 ```mermaid
 graph TD
     Data[BMI, Children, Costs] --> Plot[Scatter Plot Visualization]
     Plot --> Linear{Is the trend a<br/>straight line?}
-    
     Linear -- Yes --> Pearson[Pearson r]
     Linear -- No/Outliers --> Spearman[Spearman rho]
-    
     Pearson --> Interpret[Check Strength & Direction]
     Spearman --> Interpret
-    
     Interpret --> Caution[Identify Confounding Factors]
     Caution --> Logic[Correlation != Causation]
-```    
-* **Objective:** Analyze lifestyle impacts (BMI, children) on medical insurance costs for an investment firm.
-* **Technical Implementation:** Computed Pearson and Spearman coefficients; visualized relationships via Seaborn scatterplots.
-* **Key Insight:** Identified confounding variables (like Age) to avoid the "Correlation implies Causation" fallacy.
----
-### 📈 Activity 2.3.5: Building Predictive Models
-Objective: Predict customer loyalty for a national retailer.
-Implementation: Built a Multiple Linear Regression model using statsmodels and scikit-learn.
-Evaluation: Optimized the model by minimizing RSS and analyzing Adjusted $R^2$ to prevent overfitting.
+
+```
+
+### Activity 2.3.5: Building Predictive Models
+
+* **Objective:** Predict customer loyalty based on product quality and brand awareness.
+* **Technical Implementation:** Built a Multiple Linear Regression model using `statsmodels`.
+* **Business Impact:** Provided coefficient-based insights (e.g., "A 1-unit increase in quality yields a specific increase in loyalty").
 
 ```mermaid
 graph TD
     Features[Quality, Awareness, Satisfaction] --> Model[Multiple Linear Regression]
-    Model --> Coeff[Interpret Coefficients: Impact per variable]
+    Model --> Coeff[Interpret Coefficients]
     Model --> Fit{Evaluate Fit}
-    
     Fit -- "R-Squared" --> Stats[Explain % of Variance]
     Fit -- "RSS" --> Stats[Quantify Unexplained Error]
-    
     Stats --> Assumptions{Check Residuals}
     Assumptions -- "Random Scatter" --> Valid[Model Reliable]
-    Assumptions -- "Pattern/Fan Shape" --> Invalid[Model Biased: Heteroscedasticity]
-    
-    Valid --> Recommend[Strategy: Which feature to invest in?]
+
 ```
-* **Objective:** Predict customer loyalty for a national retailer based on product quality and brand awareness.
-* **Technical Implementation:** Built a Multiple Linear Regression model using `statsmodels` and `scikit-learn`.
-* **Evaluation:** Optimized the model by minimizing RSS and analyzing Adjusted  to prevent overfitting.
-* **Business Impact:** Provided coefficient-based insights (e.g., "A 1-unit increase in perceived quality yields a  increase in loyalty").
 
 ---
 
-## Assumption & Diagnostic Checks
-
-To round out your GitHub portfolio, here are the diagrams for the **Assumption & Diagnostic Checks**. These are crucial because they demonstrate to recruiters that you don't just "run models," but you actively validate their integrity and reliability.
+## 🔍 Assumption & Diagnostic Checks
 
 ### 1. Model Diagnostic Flow
-
-This diagram shows the sequence of checks you perform once a model is built to ensure it is "trustworthy."
 
 ```mermaid
 graph TD
@@ -279,87 +213,106 @@ graph TD
     Check1 -- "Residual Plot" --> Check2{Multicollinearity}
     Check2 -- "VIF Analysis" --> Check3{Normality}
     Check3 -- "Q-Q Plot / CLT" --> Check4{Risk Assessment}
-    
     Check4 --> Sens[Sensitivity vs Specificity]
     Check4 --> PI[Prediction Intervals]
-    
     Sens --> Final[Reliable Business Insight]
-    PI --> Final
 
 ```
 
----
+### 2. Normality & CLT
 
-### 2. Homoscedasticity (Error Variance)
+* **Central Limit Theorem:** Leveraged the CLT to ensure sample means follow a normal distribution, allowing for valid inference.
+<img width="458" height="361" alt="image" src="https://github.com/user-attachments/assets/f1f4efa1-9626-45e3-8f11-9aaceb70fd3d" />
 
-This is the most important visual check in regression. You want to see "the cloud," not "the fan."
-
----
-
-### 3. Central Limit Theorem (CLT)
-
-The CLT is the "Safety Net" of statistics. It explains why we can use Normal Distribution math even if the raw data looks "messy."
 
 ```mermaid
 graph LR
-    Pop[Messy/Non-Normal Population] --> Samples[Take 1000s of Samples]
-    Samples --> Means[Calculate Mean of each Sample]
+    Pop[Messy Population] --> Samples[Take 1000s of Samples]
+    Samples --> Means[Calculate Mean of each]
     Means --> Dist[Normal Distribution of Means]
-    
     style Dist fill:#f9f,stroke:#333,stroke-width:2px
 
 ```
 
-[Image illustrating the Central Limit Theorem showing how different population distributions result in normal sampling distributions]
+### 3. Multicollinearity & Risk
 
----
-
-### 4. Multicollinearity & Redundancy
-
-This explains why we screen independent variables. If  and  tell the same story, the model gets confused.
+* **VIF Screening:** Screened independent variables to ensure they were not redundant.
 
 ```mermaid
 graph TD
-    X1[Feature A: Height in cm] --- Correlated((High Correlation))
-    X2[Feature B: Height in inches] --- Correlated
+    X1[Feature A] --- Correlated((High Correlation))
+    X2[Feature B] --- Correlated
     Correlated --> Issue[Unstable Coefficients]
     Issue --> Fix[Drop one Feature]
 
 ```
 
----
-
-### 5. Risk Assessment: The Decision Trade-off
-
-When your model makes a prediction (e.g., "Will this customer be loyal?"), you have to balance two types of mistakes.
+* **Homoscedasticity:** Verified constant variance in residuals.
+* **Sensitivity vs. Specificity:** Balanced catching "truth" vs. avoiding "false alarms."
 
 ```mermaid
 graph LR
-    subgraph "Sensitivity (Catching the Truth)"
+    subgraph "Sensitivity"
     TP[True Positives]
     FN[False Negatives]
     end
-    
-    subgraph "Specificity (Avoiding False Alarms)"
+    subgraph "Specificity"
     TN[True Negatives]
     FP[False Positives]
     end
-    
     TP -.-> Tradeoff{The Balance}
     FP -.-> Tradeoff
 
 ```
 
----
+### 4. Prediction Intervals
 
-### 6. Prediction Intervals vs. Confidence Intervals
+Provided a range for individual variability, distinct from population averages.
 
-This explains the "Individual vs. Average" range you provided in your diagnostic checks.
+Prediction vs. Confidence Intervals Logic
+This diagram explains why one is wider than the other and when to use each for business decisions.
 
-[Image comparing Confidence Intervals and Prediction Intervals on a regression plot, showing the PI as a wider band]
+```mermaid
+graph TD
+    A[Regression Model Prediction] --> B{What are you<br/>predicting?}
+    
+    B -- "The Average Group Outcome" --> C[Confidence Interval - CI]
+    B -- "A Specific Single Case" --> D[Prediction Interval - PI]
+    
+    subgraph "Uncertainty Components"
+    C --- C1[Model Estimation Error]
+    D --- D1[Model Estimation Error]
+    D --- D2[Individual Data Noise / Variance]
+    end
+    
+    subgraph "Visual Characteristics"
+    C2[Narrower Band]
+    D3[Significantly Wider Band]
+    end
+    
+    C1 --> C2
+    D1 --> D3
+    D2 --> D3
+    
+    subgraph "Business Use Case"
+    C3["Strategic Planning:<br/>'What is the average ROI?'"]
+    D4["Risk Assessment:<br/>'What will THIS customer spend?'"]
+    end
+    
+    C2 --> C3
+    D3 --> D4
 
-**Would you like me to help you write a "Diagnostic Summary" paragraph for your README that explains how these checks specifically improved your retail loyalty model?**
+    style C fill:#e1f5fe,stroke:#01579b
+    style D fill:#fff3e0,stroke:#e65100
+    style D3 stroke-width:4px
+```
 
+Visual Representation Guide
+When you look at a regression plot:
+
+Confidence Interval (CI): Think of this as the "wiggle room" of the best-fit line itself. If you ran the experiment again, the line might move slightly; the CI shows where the mean line likely stays.
+
+Prediction Interval (PI): Think of this as the "Scatter Zone." It covers nearly all your data points. It is wider because even if you have the perfect line, individual people/events are unpredictable and "noisy."
 ---
 
 ## Technologies Used
@@ -367,4 +320,3 @@ This explains the "Individual vs. Average" range you provided in your diagnostic
 * **Language:** Python 3.x
 * **Libraries:** `Pandas`, `NumPy`, `Matplotlib`, `Seaborn`, `Scipy.stats`, `Statsmodels`, `Scikit-Learn`
 * **Documentation:** Mermaid.js, Markdown
-
