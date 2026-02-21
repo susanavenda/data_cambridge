@@ -13,95 +13,80 @@ This repository contains a series of technical analyses focused on applying adva
 * **Model Evaluation:** Interpreting , Adjusted , and RSS (Residual Sum of Squares).
 * **Risk Assessment:** Evaluating Sensitivity vs. Specificity and Prediction Intervals.
 
+
+
 ```mermaid
 graph TD
-    %% STYLE DEFINITIONS - DARK MODE
-    classDef strategic fill:#1b3022,stroke:#72a076,stroke-width:2px,color:#ffffff;
-    classDef distribution fill:#2e3a23,stroke:#9ccc65,stroke-width:2px,color:#ffffff;
-    classDef execution fill:#1a2b3c,stroke:#64b5f6,stroke-width:2px,color:#ffffff;
-    classDef modeling fill:#000000,stroke:#333333,stroke-width:4px,color:#ffffff,font-weight:bold;
-    classDef decision fill:#333333,stroke:#666666,stroke-width:2px,color:#ffffff,font-weight:bold;
+    %% STYLE DEFINITIONS
+    classDef gate fill:#333333,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef categorical fill:#1b3022,stroke:#72a076,stroke-width:2px,color:#fff;
+    classDef numerical fill:#1a2b3c,stroke:#64b5f6,stroke-width:2px,color:#fff;
     classDef success fill:#ffffff,stroke:#2e7d32,stroke-width:3px,color:#2e7d32,font-weight:bold;
     classDef error fill:#451a1a,stroke:#d32f2f,stroke-width:3px,color:#ffffff,font-weight:bold;
+    classDef diagnostic fill:#fff3cd,stroke:#ffa000,stroke-width:2px,color:#000;
+    classDef time fill:#4a148c,stroke:#ce93d8,stroke-width:2px,color:#fff;
 
-    %% 1. VISUAL EDA & STRENGTH CHECK
-    subgraph S1 [⬛ 1. VISUAL EDA & STRENGTH]
-        A1[(Dataset)] --> A2["Scatter Plot: sns.scatterplot"]
-        A2 --> B1{Q0: Linear?}
-        B1 -- "Yes" --> C1["Pearson r"]
-        B1 -- "No" --> C2["Spearman rho"]
-        
-        C1 --> S_Check{"Q1: |r| Strength?"}
-        C2 --> S_Check
-        
-        S_Check -- "|r| < 0.3" --> S_Weak["WEAK: Stop or Feature Engineer"]
-        S_Check -- "0.3 < |r| < 0.7" --> S_Mod["MODERATE: Proceed with Caution"]
-        S_Check -- "|r| > 0.7" --> S_Strong["STRONG: High Predictive Potential"]
-    end
-    class S1 strategic;
-    class S_Weak error;
-    class S_Strong success;
+    %% 0. DATA TYPE GATE
+    Start[(Dataset)] --> TypeGate{Q0: Variable Types?}
 
-    %% 2. BUSINESS LOGIC & TEST SELECTION
-    subgraph S2 [⬛ 2. TEST SELECTION]
-        S_Strong --> Metric{Q2: Metric?}
-        S_Mod --> Metric
-        
-        Metric -- "Categories" --> Chi["Chi-Square: Mosaic Chart"]
-        Metric -- "2 Groups" --> TTest["t-test: Box Plot"]
-        Metric -- "3+ Groups" --> ANOVA["ANOVA: Box Plot"]
-    end
-    class S2 distribution;
+    %% ROUTES
+    TypeGate -- "X: Cat / Y: Num" --> Independent{Q1: Same Subjects?}
+    Independent -- "No" --> Groups{Groups?}
+    Groups -- "2" --> TTest["Independent t-test"]
+    Groups -- "3+" --> ANOVA["One-Way ANOVA"]
+    Independent -- "Yes" --> Time{Type?}
+    Time -- "Before/After" --> Paired["Paired t-test"]
+    Time -- "Over Time" --> RepANOVA["Repeated Measures ANOVA"]
 
-    %% 3. SIGNIFICANCE GATE
-    subgraph S3 [⬛ 3. SIGNIFICANCE GATE]
-        Chi --> F1{Q3: p < 0.05?}
-        TTest --> F1
-        ANOVA --> F1
-        
-        F1 -- "p > 0.05" --> H0_Outcome["FAIL TO REJECT H0: Noise"]
-        F1 -- "p < 0.05" --> H1_Outcome["REJECT H0: SIGNIF."]
-    end
-    class S3 execution;
-    class H0_Outcome error;
-    class H1_Outcome success;
+    TypeGate -- "X: Num / Y: Num" --> Linear{Q1: Is it Linear?}
+    Linear -- "Yes" --> Pearson["Pearson r"]
+    Linear -- "No" --> Spearman["Spearman rho"]
 
-    %% 4. OLS REGRESSION CORE (The Engine)
-    subgraph S4 [⬛ 4. OLS REGRESSION CORE]
-        H1_Outcome --> G1["OLS ENGINE: sm.OLS(y, X).fit()"]
-        G1 --> G2["COEFFICIENTS: Y = B0 + B1X1 + e"]
-        G1 --> G3["ACCURACY: R-Squared / RSS"]
-    end
-    class S4 modeling;
-    class G1,G2,G3 modeling;
+    TypeGate -- "X: Cat / Y: Cat" --> Chi2["Chi-Square"]
 
-    %% 5. VALIDATION & RISK (The Safety Check)
-    subgraph S5 [⬛ 5. VALIDATION & RISK]
-        G1["OLS Output"] --> H1["Residual Plot Check"]
-        
-        %% PREDICTION VS CONFIDENCE
-        H1 --> Focus{"Q4: Prediction Focus?"}
-        Focus -- "Average Trend" --> CI["CONFIDENCE INTERVAL (Narrow)"]
-        Focus -- "Specific Case" --> PI["PREDICTION INTERVAL (Wide)"]
-        
-        %% RISK ASSESSMENT
-        CI --> H2{"Q5: Result Valid?"}
-        PI --> H2
-        
-        H2 -- "YES" --> Metrics["RISK ASSESSMENT"]
-        Metrics --> Sens["SENSITIVITY: Catching Positives"]
-        Metrics --> Spec["SPECIFICITY: Avoiding False Alarms"]
-    end
-    class S5 strategic;
-    class H2,Focus decision;
-    class Success success;
-    class Fail error;
+    %% 1. SIGNIFICANCE GATE
+    TTest & ANOVA & Pearson & Spearman & Chi2 & Paired & RepANOVA --> SigGate{Q2: p < 0.05?}
+    SigGate -- "No" --> H0["FAIL TO REJECT: Noise/Chance"]
+    SigGate -- "Yes" --> H1["REJECT H0: SIGNIFICANT"]
+
+    %% 2. THE QUALITY FILTER
+    H1 --> Model["Build Model / Post-hoc"]
+    Model --> BP{Q3: Diagnostic Test?}
+    BP -- "Fail (p < 0.05)" --> Guess["MODEL UNRELIABLE: Guessing"]
+    BP -- "Pass (p > 0.05)" --> Stable["STABLE & RELIABLE"]
+    Guess --> Transform["Transform / Robust SE"]
+
+    %% 3. REFINED FINAL DIAGNOSTIC CHECKPOINTS
+    Stable --> CheckGate{Q4: Final Stress Test}
+
+    %% CLT BRANCH
+    CheckGate -- "CLT" --> NCheck{n > 30?}
+    NCheck -- "Yes" --> Normal["Normal Sampling Dist: Trusted p"]
+    NCheck -- "No" --> NonParam["Non-Parametric / Bootstrap"]
+
+    %% INTERVAL BRANCH
+    CheckGate -- "Intervals" --> Goal{Target?}
+    Goal -- "Average" --> CI["Confidence Interval: Precise"]
+    Goal -- "Individual" --> PI["Prediction Interval: Wide/Realistic"]
+
+    %% RISK BRANCH
+    CheckGate -- "Risk" --> Tradeoff{Goal?}
+    Tradeoff -- "Avoid Misses" --> Sens["High Sensitivity"]
+    Tradeoff -- "Avoid False Alarms" --> Spec["High Specificity"]
+
+    %% CONVERGENCE
+    Normal & CI & PI & Sens & Spec --> Deploy["Final Insight/Prediction"]
 
     %% APPLY CLASSES
-    class B1,S_Check,Metric,F1,Focus,H2 decision;
+    class TypeGate,Independent,Groups,Time,Linear,SigGate,BP,CheckGate,NCheck,Goal,Tradeoff gate;
+    class TTest,ANOVA,Chi2 categorical;
+    class Pearson,Spearman,Model numerical;
+    class Paired,RepANOVA time;
+    class H1,Stable,Deploy success;
+    class H0,Guess,Transform,NonParam error;
+    class Normal,CI,PI,Sens,Spec diagnostic;
+  
 ```
-
-
 ---
 
 ## Week 1: Strategic Foundations
