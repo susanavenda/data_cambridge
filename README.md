@@ -109,40 +109,6 @@ graph TD
     style Num fill:#fff3e0,stroke:#e65100
 ```
 
-Master Decision Logic Flow
-This diagram illustrates the end-to-end framework used to select the appropriate statistical test based on data types and business goals.
-
-```mermaid
-graph TD
-    A[Start: Receive Dataset] --> B[CRISP-DM: Business Understanding]
-    B --> C{Data Type?}
-    
-    C -- Categorical --> D[Count frequencies / Proportions]
-    C -- Continuous --> E[Check Distribution: Histogram]
-    
-    E --> F{Is it Normal?}
-    F -- Yes: Parametric --> G[Mean, SD, Pearson r, t-test]
-    F -- No: Non-Parametric --> H[Median, IQR, Spearman rho]
-    
-    G --> I{Business Goal?}
-    H --> I
-    D --> I
-    
-    I -- "Compare Groups" --> J{How many groups?}
-    J -- 2 Groups --> K[t-test]
-    J -- 3+ Groups --> L[ANOVA]
-    J -- Cat vs Cat --> M[Chi-Square]
-    
-    I -- "Find Relationships" --> N[Correlation Analysis]
-    I -- "Predict Outcomes" --> O[Linear Regression]
-    
-    O --> P[Check Model Fit: R-Squared / RSS]
-    P --> Q[Check Assumptions: Residual Plots]
-```
-
-
-
-
 ---
 
 
