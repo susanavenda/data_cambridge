@@ -13,6 +13,8 @@ This repository contains a series of technical analyses focused on applying adva
 * **Model Evaluation:** Interpreting , Adjusted , and RSS (Residual Sum of Squares).
 * **Risk Assessment:** Evaluating Sensitivity vs. Specificity and Prediction Intervals.
 
+more notes:
+https://www.notion.so/Cambridge-PACE-Data-Science-Programme-3040b8321d67803f9b6ec9a5c60c6a9b?source=copy_link
 
 
 ```mermaid
