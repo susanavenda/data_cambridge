@@ -1,19 +1,16 @@
-
-# Data Science Portfolio: Statistical Methods & Predictive Modeling
-
-> **Weeks 1 & 2: From Business Alignment to Evidence-Based Decision Making**
+# Data Science Portfolio: Statistical Methods and Predictive Modeling
 
 ## Project Overview
 
-This repository documents a complete data science workflow. It transitions from the strategic planning of **Week 1** (CRISP-DM, Data Maturity, and Feature Engineering) to the mathematical execution of **Week 2** (Hypothesis Testing, Correlation, and Regression). The goal is to move beyond "gut feeling" and use mathematical rigor to validate assumptions, identify patterns, and predict future outcomes.
+This repository contains a series of technical analyses focused on applying advanced statistical techniques to solve business problems. The goal of this work is to move beyond "gut feeling" and use mathematical rigor to validate assumptions, identify patterns, and predict future outcomes. This portfolio follows the transition from strategic business framing to predictive execution.
 
-## 🛠️ Skills Demonstrated
+## Skills Demonstrated
 
 * **Strategic Planning:** CRISP-DM lifecycle, 5 Whys Root Cause Analysis, and DIKW Pyramid.
-* **Hypothesis Testing:** -tests, ANOVA, and Chi-Square analysis.
-* **Correlation:** Pearson () and Spearman () coefficients for relationship mapping.
+* **Hypothesis Testing:** t-tests, ANOVA, and Chi-Square analysis.
+* **Correlation:** Pearson (r) and Spearman (rho) coefficients for relationship mapping.
 * **Regression:** Simple and Multiple Linear Regression using OLS (Ordinary Least Squares).
-* **Model Evaluation:** Interpreting , Adjusted , and RSS (Residual Sum of Squares).
+* **Model Evaluation:** Interpreting R-Squared, Adjusted R-Squared, and RSS (Residual Sum of Squares).
 * **Risk Assessment:** Evaluating Sensitivity vs. Specificity and Prediction Intervals.
 
 ---
@@ -22,7 +19,7 @@ This repository documents a complete data science workflow. It transitions from 
 
 ### 1. The CRISP-DM Framework
 
-Before touching code, I utilize the **CRISP-DM** lifecycle to ensure technical work solves a real business problem.
+Before performing analysis, I utilize the **CRISP-DM** (Cross-Industry Process for Data Mining) lifecycle to ensure technical work aligns with business ROI.
 
 ```mermaid
 graph LR
@@ -39,9 +36,7 @@ graph LR
 
 ```
 
-### 2. Business Logic & Data Understanding
-
-* **DIKW Pyramid:** Defining the "Wisdom" required for action.
+* **Business Understanding (DIKW Pyramid):** Moving from raw data to actionable wisdom.
 
 ```mermaid
 graph TD
@@ -52,25 +47,20 @@ graph TD
 
 ```
 
-* **The 5 Vs:** Assessing Volume, Velocity, Variety, Veracity, and Value.
+* **Data Understanding (The 5 Vs):** Assessing **Volume, Velocity, Variety, Veracity, and Value** to determine data maturity.
 
 ```mermaid
 mindmap
   root((5 Vs of Big Data))
     Volume
-      Massive Scale
     Velocity
-      Real-time Processing
     Variety
-      Unstructured/Structured
     Veracity
-      Data Quality
     Value
-      ROI/Insights
 
 ```
 
-* **Feature Engineering:** Applying human ingenuity to create variables that help models see hidden patterns.
+* **Feature Engineering:** Applying human ingenuity to create new variables (e.g., **Debt-to-Income ratio**) that provide context to "Black Box" models.
 
 ```mermaid
 graph TD
@@ -85,9 +75,12 @@ graph TD
 
 ```
 
-### 3. Data Classification
+### 2. Data Classification and Maturity
 
-Understanding data types is the first step in selecting the correct statistical tool.
+Understanding data types determines the mathematical toolkit required for the project.
+
+* **Categorical (Nominal/Ordinal):** For grouping and ranking.
+* **Numerical (Discrete/Continuous):** For counting and measuring.
 
 ```mermaid
 graph TD
@@ -96,11 +89,11 @@ graph TD
     Cat --> Nom[Nominal]
     Nom -- Example --> Eye[Eye Color, Gender]
     Cat --> Ord[Ordinal]
-    Ord -- Example --> Rank[Survey Ratings]
+    Ord -- Example --> Rank[Survey Ratings, Seniority]
     Num --> Disc[Discrete]
-    Disc -- Example --> Count[Employee Count]
+    Disc -- Example --> Count[Number of Employees]
     Num --> Cont[Continuous]
-    Cont -- Example --> Meas[Revenue, Time]
+    Cont -- Example --> Meas[Revenue, Weight, Time]
     style Cat fill:#e1f5fe,stroke:#01579b
     style Num fill:#fff3e0,stroke:#e65100
 
@@ -110,7 +103,7 @@ graph TD
 
 ## Master Decision Logic Flow
 
-This framework is used throughout the activities to select the appropriate statistical test.
+The following diagram illustrates the end-to-end framework used to select the appropriate statistical test based on data types and business goals.
 
 ```mermaid
 graph TD
@@ -141,9 +134,9 @@ graph TD
 
 ### Activity 2.1.3: Hypothesis Testing
 
-* **Objective:** Validate assumptions across scenarios (Price, Productivity, Market Research, QC, and Product Lines).
-* **Technical Implementation:** Utilized `scipy.stats` to perform t-tests and ANOVA.
-* **Key Insight:** Separated "signal" from "noise" by interpreting -values against .
+* **Objective:** Validate business assumptions across five scenarios (**Price, Productivity, Market Research, QC, and Product Lines**).
+* **Technical Implementation:** Utilized `scipy.stats` to perform t-tests and ANOVA to separate "signal" from "noise."
+* **Key Insight:** Interpreted p-values against a significance level (alpha) of **0.05** to determine if results were statistically significant or due to chance.
 
 ```mermaid
 graph LR
@@ -162,8 +155,9 @@ graph LR
 
 ### Activity 2.2.3: Interpreting Correlation
 
-* **Objective:** Analyze lifestyle impacts (BMI, children) on medical insurance costs.
-* **Technical Implementation:** Computed Pearson and Spearman coefficients; visualized relationships via Seaborn.
+* **Objective:** Analyze lifestyle impacts (**BMI, children**) on medical insurance costs for an investment firm.
+* **Technical Implementation:** Computed **Pearson (r)** for linear trends and **Spearman (rho)** for non-linear relationships or outliers.
+* **Key Insight:** Identified confounding variables (like **Age**) to avoid the "Correlation implies Causation" fallacy.
 
 ```mermaid
 graph TD
@@ -180,14 +174,15 @@ graph TD
 
 ### Activity 2.3.5: Building Predictive Models
 
-* **Objective:** Predict customer loyalty based on product quality and brand awareness.
-* **Technical Implementation:** Built a Multiple Linear Regression model using `statsmodels`.
-* **Business Impact:** Provided coefficient-based insights (e.g., "A 1-unit increase in quality yields a specific increase in loyalty").
+* **Objective:** Predict customer loyalty for a national retailer based on **product quality, brand awareness, and satisfaction**.
+* **Technical Implementation:** Built a Multiple Linear Regression model using **OLS (Ordinary Least Squares)**.
+* **Evaluation:** Interpreted **Adjusted R-Squared** to ensure model complexity did not lead to overfitting and minimized **RSS**.
+* **Business Impact:** Provided coefficient-based insights (e.g., "A 1-unit increase in perceived quality yields a measurable increase in loyalty score").
 
 ```mermaid
 graph TD
     Features[Quality, Awareness, Satisfaction] --> Model[Multiple Linear Regression]
-    Model --> Coeff[Interpret Coefficients]
+    Model --> Coeff[Interpret Coefficients: Impact per variable]
     Model --> Fit{Evaluate Fit}
     Fit -- "R-Squared" --> Stats[Explain % of Variance]
     Fit -- "RSS" --> Stats[Quantify Unexplained Error]
@@ -198,60 +193,53 @@ graph TD
 
 ---
 
-## 🔍 Assumption & Diagnostic Checks
+## Assumption and Diagnostic Checks
 
-### 1. Model Diagnostic Flow
+### 1. Central Limit Theorem (CLT)
 
-```mermaid
-graph TD
-    Model[Trained Regression Model] --> Check1{Homoscedasticity}
-    Check1 -- "Residual Plot" --> Check2{Multicollinearity}
-    Check2 -- "VIF Analysis" --> Check3{Normality}
-    Check3 -- "Q-Q Plot / CLT" --> Check4{Risk Assessment}
-    Check4 --> Sens[Sensitivity vs Specificity]
-    Check4 --> PI[Prediction Intervals]
-    Sens --> Final[Reliable Business Insight]
+The CLT is the "Safety Net" of statistics. It explains why we can use Normal Distribution math even if the raw data looks "messy" or non-normal.
 
-```
-
-### 2. Normality & CLT
-
-* **Central Limit Theorem:** Leveraged the CLT to ensure sample means follow a normal distribution, allowing for valid inference.
-<img width="458" height="361" alt="image" src="https://github.com/user-attachments/assets/f1f4efa1-9626-45e3-8f11-9aaceb70fd3d" />
-
+[Image illustrating the Central Limit Theorem showing how different population distributions result in normal sampling distributions]
 
 ```mermaid
 graph LR
-    Pop[Messy Population] --> Samples[Take 1000s of Samples]
-    Samples --> Means[Calculate Mean of each]
+    Pop[Messy/Non-Normal Population] --> Samples[Take 1000s of Samples]
+    Samples --> Means[Calculate Mean of each Sample]
     Means --> Dist[Normal Distribution of Means]
     style Dist fill:#f9f,stroke:#333,stroke-width:2px
 
 ```
 
-### 3. Multicollinearity & Risk
+### 2. Prediction vs. Confidence Intervals
 
-* **VIF Screening:** Screened independent variables to ensure they were not redundant.
+This diagnostic check accounts for the difference between group averages and individual variability.
+
+[Image comparing Confidence Intervals and Prediction Intervals on a regression plot, showing the PI as a wider band]
 
 ```mermaid
 graph TD
-    X1[Feature A] --- Correlated((High Correlation))
-    X2[Feature B] --- Correlated
-    Correlated --> Issue[Unstable Coefficients]
-    Issue --> Fix[Drop one Feature]
+    A[Prediction] --> B{What are you predicting?}
+    B -- "The Group Average" --> C[Confidence Interval: Narrower Band]
+    B -- "A Specific Individual" --> D[Prediction Interval: Wider Band]
+    C --> E[Use for Strategy/ROI]
+    D --> F[Use for Risk Assessment]
+    style D fill:#fff3e0,stroke:#e65100
 
 ```
 
-* **Homoscedasticity:** Verified constant variance in residuals.
-* **Sensitivity vs. Specificity:** Balanced catching "truth" vs. avoiding "false alarms."
+### 3. Model Reliability Audits
+
+* **Homoscedasticity:** Verified constant variance in residuals to ensure consistent prediction accuracy.
+* **Multicollinearity:** Screened independent variables using **VIF Analysis** to ensure they were not redundant.
+* **Risk Assessment (Sensitivity vs. Specificity):** Evaluated trade-offs to balance between missing positives and raising false alarms.
 
 ```mermaid
 graph LR
-    subgraph "Sensitivity"
+    subgraph "Sensitivity (Catching the Truth)"
     TP[True Positives]
     FN[False Negatives]
     end
-    subgraph "Specificity"
+    subgraph "Specificity (Avoiding False Alarms)"
     TN[True Negatives]
     FP[False Positives]
     end
@@ -260,58 +248,24 @@ graph LR
 
 ```
 
-### 4. Prediction Intervals
+---
 
-Provided a range for individual variability, distinct from population averages.
+## Glossary of Mathematical Terms for Study
 
-Prediction vs. Confidence Intervals Logic
-This diagram explains why one is wider than the other and when to use each for business decisions.
+| Term | Definition |
+| --- | --- |
+| **p-value** | The probability that the observed results happened by chance. If , we reject the Null Hypothesis. |
+| **OLS (Ordinary Least Squares)** | A method for estimating the parameters in a linear regression model by minimizing the sum of the squares of the vertical deviations between each data point and the fitted line. |
+| **RSS (Residual Sum of Squares)** | A measure of the discrepancy between the data and an estimation model. A small RSS indicates a tight fit of the model to the data. |
+| **R-Squared ()** | The proportion of the variance for a dependent variable that is explained by an independent variable or variables in a regression model. |
+| **Adjusted R-Squared** | A modified version of R-squared that has been adjusted for the number of predictors in the model; it only increases if the new term improves the model more than would be expected by chance. |
+| **VIF (Variance Inflation Factor)** | A measure of the amount of multicollinearity in a set of multiple regression variables. High VIF (usually > 5 or 10) indicates high correlation between predictors. |
+| **Homoscedasticity** | A condition in which the variance of the residual (error) is constant across all levels of the independent variables. |
 
-```mermaid
-graph TD
-    A[Regression Model Prediction] --> B{What are you<br/>predicting?}
-    
-    B -- "The Average Group Outcome" --> C[Confidence Interval - CI]
-    B -- "A Specific Single Case" --> D[Prediction Interval - PI]
-    
-    subgraph "Uncertainty Components"
-    C --- C1[Model Estimation Error]
-    D --- D1[Model Estimation Error]
-    D --- D2[Individual Data Noise / Variance]
-    end
-    
-    subgraph "Visual Characteristics"
-    C2[Narrower Band]
-    D3[Significantly Wider Band]
-    end
-    
-    C1 --> C2
-    D1 --> D3
-    D2 --> D3
-    
-    subgraph "Business Use Case"
-    C3["Strategic Planning:<br/>'What is the average ROI?'"]
-    D4["Risk Assessment:<br/>'What will THIS customer spend?'"]
-    end
-    
-    C2 --> C3
-    D3 --> D4
-
-    style C fill:#e1f5fe,stroke:#01579b
-    style D fill:#fff3e0,stroke:#e65100
-    style D3 stroke-width:4px
-```
-
-Visual Representation Guide
-When you look at a regression plot:
-
-Confidence Interval (CI): Think of this as the "wiggle room" of the best-fit line itself. If you ran the experiment again, the line might move slightly; the CI shows where the mean line likely stays.
-
-Prediction Interval (PI): Think of this as the "Scatter Zone." It covers nearly all your data points. It is wider because even if you have the perfect line, individual people/events are unpredictable and "noisy."
 ---
 
 ## Technologies Used
 
 * **Language:** Python 3.x
-* **Libraries:** `Pandas`, `NumPy`, `Matplotlib`, `Seaborn`, `Scipy.stats`, `Statsmodels`, `Scikit-Learn`
+* **Libraries:** Pandas, NumPy, Matplotlib, Seaborn, Scipy.stats, Statsmodels, Scikit-Learn
 * **Documentation:** Mermaid.js, Markdown
