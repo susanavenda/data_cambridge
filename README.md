@@ -7,10 +7,10 @@ This repository contains a series of technical analyses focused on applying adva
 ## Skills Demonstrated
 
 * **Strategic Planning:** CRISP-DM lifecycle, 5 Whys Root Cause Analysis, and DIKW Pyramid.
-* **Hypothesis Testing:** t-tests, ANOVA, and Chi-Square analysis.
-* **Correlation:** Pearson (r) and Spearman (rho) coefficients for relationship mapping.
+* **Hypothesis Testing:** -tests, ANOVA, and Chi-Square analysis.
+* **Correlation:** Pearson () and Spearman () coefficients for relationship mapping.
 * **Regression:** Simple and Multiple Linear Regression using OLS (Ordinary Least Squares).
-* **Model Evaluation:** Interpreting R-Squared, Adjusted R-Squared, and RSS (Residual Sum of Squares).
+* **Model Evaluation:** Interpreting , Adjusted , and RSS (Residual Sum of Squares).
 * **Risk Assessment:** Evaluating Sensitivity vs. Specificity and Prediction Intervals.
 
 ---
@@ -19,112 +19,49 @@ This repository contains a series of technical analyses focused on applying adva
 
 ### 1. The CRISP-DM Framework
 
-Before performing analysis, I utilize the **CRISP-DM** (Cross-Industry Process for Data Mining) lifecycle to ensure technical work aligns with business ROI.
+Before performing analysis, I utilize the **CRISP-DM** lifecycle to ensure technical work aligns with business ROI.
 
 ```mermaid
 graph LR
-    subgraph Iterative Cycle
     BU[Business Understanding] <--> DU[Data Understanding]
     DU <--> DP[Data Preparation]
     DP <--> M[Modeling]
     M <--> E[Evaluation]
     E --> BU
-    end
     E --> D[Deployment]
-    style BU fill:#f9f,stroke:#333,stroke-width:2px
-    style D fill:#6f6,stroke:#333,stroke-width:2px
+    style BU fill:#f8f9fa,stroke:#adb5bd,stroke-width:2px
+    style D fill:#f8f9fa,stroke:#adb5bd,stroke-width:2px
 
 ```
 
 * **Business Understanding (DIKW Pyramid):** Moving from raw data to actionable wisdom.
 
 ```mermaid
-graph TD
-    W[Wisdom: Strategic Action] --- K[Knowledge: Why it happened]
-    K --- I[Information: Context/Trends]
-    I --- D[Data: Raw Numbers]
-    style W fill:#ffd700,stroke:#333,stroke-width:4px
+graph LR
+    D[Data: Raw Numbers] --> I[Information: Context/Trends]
+    I --> K[Knowledge: Why it happened]
+    K --> W[Wisdom: Strategic Action]
+    style W fill:#f8f9fa,stroke:#6c757d,stroke-width:2px
+    style K fill:#ffffff,stroke:#adb5bd
+    style I fill:#ffffff,stroke:#adb5bd
+    style D fill:#ffffff,stroke:#adb5bd
 
 ```
 
-* **Data Understanding (The 5 Vs):** Assessing **Volume, Velocity, Variety, Veracity, and Value** to determine data maturity.
-
-```mermaid
-mindmap
-  root((5 Vs of Big Data))
-    Volume
-    Velocity
-    Variety
-    Veracity
-    Value
-
-```
-
-* **Feature Engineering:** Applying human ingenuity to create new variables (e.g., **Debt-to-Income ratio**) that provide context to "Black Box" models.
-
-```mermaid
-graph TD
-    Raw[Raw Data Sources] --> Domain[Domain Knowledge Application]
-    Domain --> Creation{New Feature Creation}
-    Creation -- Example --> DTI[Debt-to-Income Ratio]
-    Creation -- Example --> PPSF[Price Per Sq Ft]
-    DTI --> Selection[Feature Selection]
-    PPSF --> Selection
-    Selection --> Model[Machine Learning Model]
-    linkStyle default stroke:#2ecc71,stroke-width:2px;
-
-```
-
-### 2. Data Classification and Maturity
+### 2. Data Classification
 
 Understanding data types determines the mathematical toolkit required for the project.
 
-* **Categorical (Nominal/Ordinal):** For grouping and ranking.
-* **Numerical (Discrete/Continuous):** For counting and measuring.
-
 ```mermaid
-graph TD
-    Data[Data Types] --> Cat[Categorical / Qualitative]
-    Data --> Num[Numerical / Quantitative]
-    Cat --> Nom[Nominal]
-    Nom -- Example --> Eye[Eye Color, Gender]
-    Cat --> Ord[Ordinal]
-    Ord -- Example --> Rank[Survey Ratings, Seniority]
-    Num --> Disc[Discrete]
-    Disc -- Example --> Count[Number of Employees]
-    Num --> Cont[Continuous]
-    Cont -- Example --> Meas[Revenue, Weight, Time]
-    style Cat fill:#e1f5fe,stroke:#01579b
-    style Num fill:#fff3e0,stroke:#e65100
-
-```
-
----
-
-## Master Decision Logic Flow
-
-The following diagram illustrates the end-to-end framework used to select the appropriate statistical test based on data types and business goals.
-
-```mermaid
-graph TD
-    A[Start: Receive Dataset] --> B[CRISP-DM: Business Understanding]
-    B --> C{Data Type?}
-    C -- Categorical --> D[Count frequencies / Proportions]
-    C -- Continuous --> E[Check Distribution: Histogram]
-    E --> F{Is it Normal?}
-    F -- Yes: Parametric --> G[Mean, SD, Pearson r, t-test]
-    F -- No: Non-Parametric --> H[Median, IQR, Spearman rho]
-    G --> I{Business Goal?}
-    H --> I
-    D --> I
-    I -- "Compare Groups" --> J{How many groups?}
-    J -- 2 Groups --> K[t-test]
-    J -- 3+ Groups --> L[ANOVA]
-    J -- Cat vs Cat --> M[Chi-Square]
-    I -- "Find Relationships" --> N[Correlation Analysis]
-    I -- "Predict Outcomes" --> O[Linear Regression]
-    O --> P[Check Model Fit: R-Squared / RSS]
-    P --> Q[Check Assumptions: Residual Plots]
+graph LR
+    Data[Data Types] --> Cat[Categorical]
+    Data --> Num[Numerical]
+    Cat --> Nom[Nominal: e.g. Gender]
+    Cat --> Ord[Ordinal: e.g. Rankings]
+    Num --> Disc[Discrete: e.g. Counts]
+    Num --> Cont[Continuous: e.g. Revenue]
+    style Cat fill:#f8f9fa,stroke:#adb5bd
+    style Num fill:#f8f9fa,stroke:#adb5bd
 
 ```
 
@@ -135,59 +72,55 @@ graph TD
 ### Activity 2.1.3: Hypothesis Testing
 
 * **Objective:** Validate business assumptions across five scenarios (**Price, Productivity, Market Research, QC, and Product Lines**).
-* **Technical Implementation:** Utilized `scipy.stats` to perform t-tests and ANOVA to separate "signal" from "noise."
-* **Key Insight:** Interpreted p-values against a significance level (alpha) of **0.05** to determine if results were statistically significant or due to chance.
+* **Implementation:** Utilized `scipy.stats` to separate "signal" from "noise" by interpreting -values against .
 
 ```mermaid
 graph LR
-    Start[Business Scenario] --> Q1{What are we comparing?}
-    Q1 -- "Means (Averages)" --> Q2{How many groups?}
-    Q1 -- "Category Counts" --> Chi[Chi-Square Test]
+    Scenario[Business Case] --> Q1{Metric Type?}
+    Q1 -- "Means" --> Q2{Groups?}
+    Q1 -- "Counts" --> Chi[Chi-Square]
     Q2 -- "2 Groups" --> T[t-test]
-    Q2 -- "3+ Groups" --> ANOVA[One-way ANOVA]
+    Q2 -- "3+ Groups" --> ANOVA[ANOVA]
     T --> P{p < 0.05?}
     ANOVA --> P
-    Chi --> P
-    P -- Yes --> Res1[Significant: Reject Null]
-    P -- No --> Res2[Not Significant: Keep Status Quo]
+    P -- Yes --> Res1[Significant]
+    P -- No --> Res2[Not Significant]
+    style Res1 fill:#ffffff,stroke:#6c757d,stroke-width:2px
+    style Res2 fill:#ffffff,stroke:#adb5bd
 
 ```
 
 ### Activity 2.2.3: Interpreting Correlation
 
 * **Objective:** Analyze lifestyle impacts (**BMI, children**) on medical insurance costs for an investment firm.
-* **Technical Implementation:** Computed **Pearson (r)** for linear trends and **Spearman (rho)** for non-linear relationships or outliers.
-* **Key Insight:** Identified confounding variables (like **Age**) to avoid the "Correlation implies Causation" fallacy.
+* **Implementation:** Computed Pearson () and Spearman () coefficients to account for outliers and non-linear trends.
 
 ```mermaid
-graph TD
-    Data[BMI, Children, Costs] --> Plot[Scatter Plot Visualization]
-    Plot --> Linear{Is the trend a<br/>straight line?}
+graph LR
+    Data[Dataset] --> Plot[Scatter Plot]
+    Plot --> Linear{Linear?}
     Linear -- Yes --> Pearson[Pearson r]
-    Linear -- No/Outliers --> Spearman[Spearman rho]
-    Pearson --> Interpret[Check Strength & Direction]
+    Linear -- No --> Spearman[Spearman rho]
+    Pearson --> Interpret[Check Strength]
     Spearman --> Interpret
-    Interpret --> Caution[Identify Confounding Factors]
-    Caution --> Logic[Correlation != Causation]
+    style Pearson fill:#f8f9fa,stroke:#6c757d
+    style Spearman fill:#f8f9fa,stroke:#6c757d
 
 ```
 
 ### Activity 2.3.5: Building Predictive Models
 
 * **Objective:** Predict customer loyalty for a national retailer based on **product quality, brand awareness, and satisfaction**.
-* **Technical Implementation:** Built a Multiple Linear Regression model using **OLS (Ordinary Least Squares)**.
-* **Evaluation:** Interpreted **Adjusted R-Squared** to ensure model complexity did not lead to overfitting and minimized **RSS**.
-* **Business Impact:** Provided coefficient-based insights (e.g., "A 1-unit increase in perceived quality yields a measurable increase in loyalty score").
+* **Implementation:** Built a Multiple Linear Regression model using **OLS (Ordinary Least Squares)**.
 
 ```mermaid
-graph TD
-    Features[Quality, Awareness, Satisfaction] --> Model[Multiple Linear Regression]
-    Model --> Coeff[Interpret Coefficients: Impact per variable]
-    Model --> Fit{Evaluate Fit}
-    Fit -- "R-Squared" --> Stats[Explain % of Variance]
-    Fit -- "RSS" --> Stats[Quantify Unexplained Error]
-    Stats --> Assumptions{Check Residuals}
-    Assumptions -- "Random Scatter" --> Valid[Model Reliable]
+graph LR
+    Features[Inputs] --> OLS[OLS Regression]
+    OLS --> Coeff[Coefficients]
+    OLS --> Fit[R-Squared/RSS]
+    Fit --> Diagnostics[Check Residuals]
+    style OLS fill:#f8f9fa,stroke:#6c757d
+    style Fit fill:#ffffff,stroke:#adb5bd
 
 ```
 
@@ -197,70 +130,143 @@ graph TD
 
 ### 1. Central Limit Theorem (CLT)
 
-The CLT is the "Safety Net" of statistics. It explains why we can use Normal Distribution math even if the raw data looks "messy" or non-normal.
+Explains why we can use Normal Distribution math even if the raw data looks non-normal.
 
 [Image illustrating the Central Limit Theorem showing how different population distributions result in normal sampling distributions]
 
 ```mermaid
 graph LR
-    Pop[Messy/Non-Normal Population] --> Samples[Take 1000s of Samples]
-    Samples --> Means[Calculate Mean of each Sample]
-    Means --> Dist[Normal Distribution of Means]
-    style Dist fill:#f9f,stroke:#333,stroke-width:2px
+    Pop[Non-Normal Population] --> Samples[Large Samples n>30]
+    Samples --> Means[Sample Means]
+    Means --> Dist[Normal Distribution]
+    style Dist fill:#ffffff,stroke:#6c757d,stroke-width:2px
 
 ```
 
 ### 2. Prediction vs. Confidence Intervals
 
-This diagnostic check accounts for the difference between group averages and individual variability.
+Diagnostic check for the difference between group averages and individual variability.
 
 [Image comparing Confidence Intervals and Prediction Intervals on a regression plot, showing the PI as a wider band]
 
 ```mermaid
-graph TD
-    A[Prediction] --> B{What are you predicting?}
-    B -- "The Group Average" --> C[Confidence Interval: Narrower Band]
-    B -- "A Specific Individual" --> D[Prediction Interval: Wider Band]
-    C --> E[Use for Strategy/ROI]
-    D --> F[Use for Risk Assessment]
-    style D fill:#fff3e0,stroke:#e65100
+graph LR
+    Goal[Prediction] --> Q{Focus?}
+    Q -- "The Average" --> CI[Confidence Interval: Narrow]
+    Q -- "The Individual" --> PI[Prediction Interval: Wide]
+    style CI fill:#f8f9fa,stroke:#6c757d
+    style PI fill:#f8f9fa,stroke:#6c757d
 
 ```
 
-### 3. Model Reliability Audits
+### 3. Risk Assessment (Sensitivity vs. Specificity)
 
-* **Homoscedasticity:** Verified constant variance in residuals to ensure consistent prediction accuracy.
-* **Multicollinearity:** Screened independent variables using **VIF Analysis** to ensure they were not redundant.
-* **Risk Assessment (Sensitivity vs. Specificity):** Evaluated trade-offs to balance between missing positives and raising false alarms.
+Evaluated trade-offs to balance between missing positives and raising false alarms.
 
 ```mermaid
 graph LR
-    subgraph "Sensitivity (Catching the Truth)"
-    TP[True Positives]
-    FN[False Negatives]
-    end
-    subgraph "Specificity (Avoiding False Alarms)"
-    TN[True Negatives]
-    FP[False Positives]
-    end
-    TP -.-> Tradeoff{The Balance}
-    FP -.-> Tradeoff
+    Sens[Sensitivity: True Positive Rate] <--> Spec[Specificity: True Negative Rate]
+    Sens --> Decision[Decision Threshold]
+    Spec --> Decision
+    style Decision fill:#ffffff,stroke:#6c757d
 
 ```
+---
+
+### Statistical Visual Cheat Sheet
+
+| If the Business Goal is... | Use this Visual Plot... | Perform this Test... | Look for this Visual Pattern... |
+| --- | --- | --- | --- |
+| **Check if data is "Normal"** | **Histogram / QQ Plot** | Shapiro-Wilk Test | A bell-shaped curve or points following a straight line. |
+| **Compare 2 Group Averages** | **Box Plot** | Independent t-test | Do the boxes overlap? Large gaps mean a significant difference. |
+| **Find Linear Relationships** | **Scatter Plot** | Pearson () | Points forming a clear, straight "up" or "down" slope. |
+| **Predict a Continuous Value** | **Regression Plot** | OLS Regression | The line should pass through the "center of mass" of the points. |
+| **Validate Regression Reliability** | **Residual Plot** | Breusch-Pagan Test | A random "cloud" of dots with no distinct shape or "fan." |
+| **Compare Categorical Proportions** | **Mosaic / Bar Chart** | Chi-Square () | Large differences in the heights/areas of the bars. |
 
 ---
 
-## Glossary of Mathematical Terms for Study
+### Study Tip: The "Visual Diagnostic" Workflow
+
+When you are taking your test or working on a project, follow this horizontal logic:
+
+```mermaid
+graph LR
+    Goal[Business Goal] --> Plot[Create Visual Plot]
+    Plot --> Pattern{Recognize Pattern}
+    Pattern -- "Bell Curve" --> Parametric[Use Mean/t-test]
+    Pattern -- "Skewed/Outliers" --> NonParametric[Use Median/Spearman]
+    Pattern -- "Fan Shape" --> Error[Model Unreliable: Heteroscedasticity]
+    Pattern -- "Random Cloud" --> Success[Model Reliable: Homoscedasticity]
+    style Goal fill:#f8f9fa,stroke:#adb5bd
+    style Success fill:#f8f9fa,stroke:#6c757d
+    style Error fill:#ffffff,stroke:#adb5bd
+
+```
+
+### Final Study Checklist
+
+1. **Confidence vs. Prediction:** Can I see the "narrow" band (average) vs. the "wide" band (individual)?
+2. **P-Value:** Is my result deep enough in the "tail" to be significant?
+3. **R-Squared:** Does my regression line actually explain the "scatter" of the points?
+
+---
+
+## Glossary of Mathematical Terms
 
 | Term | Definition |
 | --- | --- |
-| **p-value** | The probability that the observed results happened by chance. If , we reject the Null Hypothesis. |
-| **OLS (Ordinary Least Squares)** | A method for estimating the parameters in a linear regression model by minimizing the sum of the squares of the vertical deviations between each data point and the fitted line. |
-| **RSS (Residual Sum of Squares)** | A measure of the discrepancy between the data and an estimation model. A small RSS indicates a tight fit of the model to the data. |
-| **R-Squared ()** | The proportion of the variance for a dependent variable that is explained by an independent variable or variables in a regression model. |
-| **Adjusted R-Squared** | A modified version of R-squared that has been adjusted for the number of predictors in the model; it only increases if the new term improves the model more than would be expected by chance. |
-| **VIF (Variance Inflation Factor)** | A measure of the amount of multicollinearity in a set of multiple regression variables. High VIF (usually > 5 or 10) indicates high correlation between predictors. |
-| **Homoscedasticity** | A condition in which the variance of the residual (error) is constant across all levels of the independent variables. |
+| **-value** | The probability that the observed results happened by chance. If , results are significant. |
+| **OLS** | **Ordinary Least Squares**: Minimizes the sum of the squares of the vertical deviations from the line. |
+| **RSS** | **Residual Sum of Squares**: Measure of the discrepancy between the data and the model. |
+| **** | The percentage of variance in the dependent variable explained by the model. |
+| **Adjusted ** | Modified  that accounts for the number of predictors to prevent overfitting. |
+| **Homoscedasticity** | Condition where the variance of error is constant across independent variables. |
+
+---
+
+To round out your study guide, here is a **Python Visual Cheat Sheet**. For a data scientist, the code is just the tool to generate the visual patterns we discussed.
+
+This sheet maps the **Visual Pattern** to the **Python Library** and the **Specific Function** you need to know for your exam or projects.
+
+---
+
+### Python Statistical Mapping
+
+| Business Task | Library | Primary Function | What the Code Does |
+| --- | --- | --- | --- |
+| **Check Distribution** | `Seaborn` | `sns.histplot(data, kde=True)` | Draws the histogram and a smooth "bell" line (KDE). |
+| **Compare Groups** | `Seaborn` | `sns.boxplot(x='group', y='value')` | Shows the median and "spread" (IQR) for each group. |
+| **Correlation Matrix** | `Seaborn` | `sns.heatmap(df.corr(), annot=True)` | Colors the relationships (1.0 is perfect, 0 is noise). |
+| **Linear Regression** | `Statsmodels` | `sm.OLS(y, X).fit()` | Calculates the best-fit line and provides the p-values. |
+| **Verify Residuals** | `Matplotlib` | `plt.scatter(model.predict(), model.resid)` | Plots the "Error Cloud" to check for Homoscedasticity. |
+
+---
+
+### The Python Logic Flow (Horizontal)
+
+This is the standard order of operations when you are coding your analysis:
+
+```mermaid
+graph LR
+    Load[df = pd.read_csv] --> Clean[df.dropna]
+    Clean --> Explore[sns.pairplot]
+    Explore --> Model[model = OLS.fit]
+    Model --> Diag[plt.scatter residuals]
+    Diag --> Summary[model.summary]
+    style Load fill:#f8f9fa,stroke:#adb5bd
+    style Model fill:#f8f9fa,stroke:#6c757d
+    style Summary fill:#ffffff,stroke:#adb5bd
+
+```
+
+### Visualizing the "Perfect" Model in Python
+
+When you run your diagnostics, you are looking for these specific Python outputs to feel confident in your results:
+
+1. **The Summary Table:** In `statsmodels`, look at `Prob (F-statistic)`. If that is , your whole model is better than guessing.
+2. **The Pairplot:** Use `sns.pairplot(df)`. It creates a grid of every scatter plot possible in your data. It is the fastest way to "see" which variables have a relationship.
+3. **The Q-Q Plot:** Use `sm.qqplot(resid, line='s')`. If the dots follow the line, your errors are normally distributed—meaning your model is statistically "safe."
 
 ---
 
@@ -268,4 +274,3 @@ graph LR
 
 * **Language:** Python 3.x
 * **Libraries:** Pandas, NumPy, Matplotlib, Seaborn, Scipy.stats, Statsmodels, Scikit-Learn
-* **Documentation:** Mermaid.js, Markdown
