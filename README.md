@@ -2,7 +2,7 @@
 
 > **Week 2: From Intuition to Evidence-Based Decision Making**
 
-## 🧭 Project Overview
+## Project Overview
 
 This repository documents a complete data science workflow. It transitions from the strategic planning of Week 1 (CRISP-DM, Data Maturity, and Feature Engineering) to the mathematical execution of Week 2 (Hypothesis Testing, Correlation, and Regression). The goal is to move beyond "gut feeling" and use mathematical rigor to validate assumptions and predict outcomes.
 
