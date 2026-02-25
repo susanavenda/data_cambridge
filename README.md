@@ -16,9 +16,8 @@ This repository contains a series of technical analyses focused on applying adva
 more notes:
 https://www.notion.so/Cambridge-PACE-Data-Science-Programme-3040b8321d67803f9b6ec9a5c60c6a9b?source=copy_link
 
-
 ```mermaid
-graph TD
+    graph TD
     %% STYLE DEFINITIONS
     classDef gate fill:#333333,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold;
     classDef categorical fill:#1b3022,stroke:#72a076,stroke-width:2px,color:#fff;
@@ -28,11 +27,15 @@ graph TD
     classDef diagnostic fill:#fff3cd,stroke:#ffa000,stroke-width:2px,color:#000;
     classDef time fill:#4a148c,stroke:#ce93d8,stroke-width:2px,color:#fff;
 
-    %% 0. DATA TYPE GATE
+    %% 0. DATA TYPE & ASSUMPTIONS
     Start[(Dataset)] --> TypeGate{Q0: Variable Types?}
+    
+    TypeGate --> Assumption{Q0.5: Continuous & Normal?}
+    Assumption -- "No" --> NonParam["Non-Parametric / Bootstrap"]
+    Assumption -- "Yes" --> Route
 
-    %% ROUTES
-    TypeGate -- "X: Cat / Y: Num" --> Independent{Q1: Same Subjects?}
+    %% ROUTES (Original Logic)
+    Route -- "X: Cat / Y: Num" --> Independent{Q1: Same Subjects?}
     Independent -- "No" --> Groups{Groups?}
     Groups -- "2" --> TTest["Independent t-test"]
     Groups -- "3+" --> ANOVA["One-Way ANOVA"]
@@ -40,19 +43,23 @@ graph TD
     Time -- "Before/After" --> Paired["Paired t-test"]
     Time -- "Over Time" --> RepANOVA["Repeated Measures ANOVA"]
 
-    TypeGate -- "X: Num / Y: Num" --> Linear{Q1: Is it Linear?}
+    Route -- "X: Num / Y: Num" --> Linear{Q1: Is it Linear?}
     Linear -- "Yes" --> Pearson["Pearson r"]
     Linear -- "No" --> Spearman["Spearman rho"]
 
-    TypeGate -- "X: Cat / Y: Cat" --> Chi2["Chi-Square"]
+    Route -- "X: Cat / Y: Cat" --> Chi2["Chi-Square"]
 
-    %% 1. SIGNIFICANCE GATE
-    TTest & ANOVA & Pearson & Spearman & Chi2 & Paired & RepANOVA --> SigGate{Q2: p < 0.05?}
-    SigGate -- "No" --> H0["FAIL TO REJECT: Noise/Chance"]
+    %% 1. SIGNIFICANCE GATE + EQUIVALENCE
+    TTest & ANOVA & Pearson & Spearman & Chi2 & Paired & RepANOVA & NonParam --> SigGate{Q2: p < 0.05?}
+    
+    SigGate -- "No" --> BizGoal{Goal: Prove Equality?}
+    BizGoal -- "No" --> H0["FAIL TO REJECT: Noise/Chance"]
+    BizGoal -- "Yes" --> Model["Build Model / Post-hoc"]
+    
     SigGate -- "Yes" --> H1["REJECT H0: SIGNIFICANT"]
+    H1 --> Model
 
     %% 2. THE QUALITY FILTER
-    H1 --> Model["Build Model / Post-hoc"]
     Model --> BP{Q3: Diagnostic Test?}
     BP -- "Fail (p < 0.05)" --> Guess["MODEL UNRELIABLE: Guessing"]
     BP -- "Pass (p > 0.05)" --> Stable["STABLE & RELIABLE"]
@@ -64,29 +71,29 @@ graph TD
     %% CLT BRANCH
     CheckGate -- "CLT" --> NCheck{n > 30?}
     NCheck -- "Yes" --> Normal["Normal Sampling Dist: Trusted p"]
-    NCheck -- "No" --> NonParam["Non-Parametric / Bootstrap"]
+    NCheck -- "No" --> NonParamBranch["Non-Parametric / Bootstrap"]
 
     %% INTERVAL BRANCH
     CheckGate -- "Intervals" --> Goal{Target?}
     Goal -- "Average" --> CI["Confidence Interval: Precise"]
     Goal -- "Individual" --> PI["Prediction Interval: Wide/Realistic"]
 
-    %% RISK BRANCH
+    %% RISK BRANCH (Sensitivity/Specificity)
     CheckGate -- "Risk" --> Tradeoff{Goal?}
     Tradeoff -- "Avoid Misses" --> Sens["High Sensitivity"]
     Tradeoff -- "Avoid False Alarms" --> Spec["High Specificity"]
 
     %% CONVERGENCE
-    Normal & CI & PI & Sens & Spec --> Deploy["Final Insight/Prediction"]
+    Normal & CI & PI & Sens & Spec & NonParamBranch --> Deploy["Final Insight/Prediction"]
 
     %% APPLY CLASSES
-    class TypeGate,Independent,Groups,Time,Linear,SigGate,BP,CheckGate,NCheck,Goal,Tradeoff gate;
+    class TypeGate,Assumption,Independent,Groups,Time,Linear,SigGate,BizGoal,BP,CheckGate,NCheck,Goal,Tradeoff gate;
     class TTest,ANOVA,Chi2 categorical;
     class Pearson,Spearman,Model numerical;
     class Paired,RepANOVA time;
     class H1,Stable,Deploy success;
-    class H0,Guess,Transform,NonParam error;
-    class Normal,CI,PI,Sens,Spec diagnostic;
+    class H0,Guess,Transform,NonParamBranch error;
+    class Normal,CI,PI,Sens,Spec,NonParam diagnostic;
   
 ```
 ---
